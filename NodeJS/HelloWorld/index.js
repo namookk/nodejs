@@ -26,7 +26,7 @@ server.listen(port, hostname, () => {
 });
 
 //terminal1
-// node HelloWorld/index.js
+// node NodeJS/HelloWorld/index.js
 // Server running at http://127.0.0.1:3000
 
 //terminal2
