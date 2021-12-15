@@ -32,6 +32,7 @@ describe('GET /users는 ', () => {
     })
 })
 
+//Http.method GET
 describe('GET /user/1 은', () => {
     describe('성공시', () => {
         it('id가 1인 유저 객체를 반환한다.' , (done) => {
@@ -58,6 +59,129 @@ describe('GET /user/1 은', () => {
         })
     })
 })
+
+//Http.method DELETE
+describe('DELETE /user/1', () => {
+    describe('성공시', () => {
+        it('id가 1인 유저를 삭제한다. 204를 응답한다.', (done) => {
+            request(app)
+                .delete('/user/1')
+                .expect(204)
+                .end(done);
+        })
+    })
+
+    describe('실패시', () => {
+        it('id가 숫자가 아닐 경우 400으로 응답한다.', (done) => {
+            request(app)
+                .delete('/user/ab')
+                .expect(400)
+                .end(done);
+        })
+    })
+})
+
+//Http.method POST
+describe('POST /users', () => {
+    describe('성공시', () =>{
+        const name = 'namookk4';
+        let body, status;
+
+        before(done => {
+            request(app)
+                .post('/users')
+                .send({name : name})
+                .expect(201)
+                .end((err, res) => {
+                    status = res.status;
+                    body = res.body;
+                    done();
+                });
+        });
+
+        it('성공시', () =>{
+            status.should.be.equals(201);
+        })
+        it('생성된 유저 객체를 반환한다.', () => {
+            body.should.have.property('id');
+        })
+        it('입력한 name을 반환한다.', () =>{
+            body.should.have.property('name' , name);
+        })
+    })
+
+    describe('실패시', () => {
+        it('name 파라미터 누락시 400을 반환한다.', (done) => {
+            request(app)
+                .post('/users')
+                .send({})
+                .expect(400)
+                .end(done);
+        })
+        it('name이 중복일 경우 409를 반환한다', (done) => {
+            request(app)
+                .post('/users')
+                .send({name : 'namookk4'})
+                .expect(409)
+                .end(done);
+        })
+    })
+})
+
+//Http.method PUT
+describe('PUT /user/1', () => {
+    describe('성공시', () => {
+        const name = 'namookk10';
+        const id = 2;
+        let body;
+        before(done => {
+            request(app)
+                .put(`/user/${id}`)
+                .send({name : name})
+                .end((err, res) => {
+                    body = res.body;
+                    done();
+                })
+        })
+
+        it('성공시', () => {
+            body.should.have.property('id', id);
+            body.should.have.property('name', name);
+        })
+    })
+
+    describe('실패시', () =>{
+        it('id가 숫자가 아닐 경우 400을 반환한다.', (done) => {
+            request(app)
+                .put('/user/abc')
+                .send({name : 'namookk10'})
+                .expect(400)
+                .end(done);
+        })
+        it('name이 없을 경우 400을 반환한다.', (done) => {
+            request(app)
+                .put('/user/1')
+                .send({})
+                .expect(400)
+                .end(done);
+        })
+        it('없는 유저일 경우 404를 반환한다', (done) => {
+            request(app)
+                .put('/user/10')
+                .send({name : 'namookk10'})
+                .expect(404)
+                .end(done);
+        })
+        it('name이 중복될 경우 409를 반환한다.', (done) => {
+            request(app)
+                .put('/user/2')
+                .send({name : 'namookk4'})
+                .expect(409)
+                .end(done);
+        })
+    })
+})
+
 
 
 
