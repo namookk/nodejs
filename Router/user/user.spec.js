@@ -1,4 +1,6 @@
-const app = require('./index');
+// test코드
+
+const app = require('../../Http/index');
 const should = require('should');
 const request = require('supertest');
 
@@ -14,12 +16,12 @@ describe('GET /users는 ', () => {
         });
 
         it('최대 limit 수 만큼 응답한다. ', (done) => {
-           request(app)
-               .get('/users?limit=2')
-               .end((err, res) => {
-                   res.body.should.have.lengthOf(2); // length가 2 여야 함
-                  done();
-               })
+            request(app)
+                .get('/users?limit=2')
+                .end((err, res) => {
+                    res.body.should.have.lengthOf(2); // length가 2 여야 함
+                    done();
+                })
         });
     });
     describe('실패시', () => {
@@ -181,7 +183,3 @@ describe('PUT /user/1', () => {
         })
     })
 })
-
-
-
-

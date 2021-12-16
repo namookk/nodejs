@@ -9,8 +9,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha Http/index.spec.js",
-    "start": "node Http/index.js"
+    "test": "NODE_ENV=test mocha Router/user/user.spec.js",
+    "start": "node bin/www.js"
   },
   "repository": {
     "type": "git",
